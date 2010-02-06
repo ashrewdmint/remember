@@ -39,7 +39,22 @@ If you are done with this functionality, use the `forget` method.
 
 And that's all. Enjoy!
 
-## License
+## Changelog
+
+### 1.0.1
+
+*  Fixed a bug that prevented changes from being remembered on some
+   field types (like textareas or select menus).
+
+*  Fixed a bug that kept the "changes" method from returning fields
+   when fields were removed (or modified in such a way so that they
+   disappeared from the string generated during serialization).
+
+### 1.0.0
+
+*  Initial release
+
+### License
 
 Copyright (c) 2010 Andrew Smith.
 
