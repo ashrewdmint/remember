@@ -54,7 +54,7 @@ And that's all. Enjoy!
 
 *  Initial release
 
-### License
+## License
 
 Copyright (c) 2010 Andrew Smith.
 
