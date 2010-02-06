@@ -39,12 +39,6 @@ If you are done with this functionality, use the `forget` method.
 
 And that's all. Enjoy!
 
-## Gotchas
-
-If the plugin does not appear to track changes on a particular field, make sure that the field has
-a name attribute. Remember uses jQuery's built-in `serialize()` method, which only works on fields
-with name attributes.
-
 ## License
 
 Copyright (c) 2010 Andrew Smith.
