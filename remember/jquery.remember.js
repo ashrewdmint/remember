@@ -18,9 +18,23 @@
     // Key used to set and retrieve data on forms
     key_name: 'jquery.remember',
     
-    // Serializes form elements and non-form elements
+    // Serializes form elements and non-form elements.
+    // Only fields with names will be serialized.
     serialize: function(el) {
-      return $('<form></form>').append(el.children().clone()).serialize();
+      var field, tag, value, params = [];
+      el.find('[name]:input').each(function(){
+        field = $(this);
+        tag   = field.get(0).nodeName.toLowerCase();
+        value = field.val() ? field.val() : field.text();
+        
+        if (field.attr('type') == 'radio' && ! field.is(':checked')) {
+          return;
+        }
+        
+        params.push(escape(field.attr('name')) + '=' + escape(value));
+      });
+      
+      return params.join('&');
     },
     
     // Finds the last serialization stored in the form. If no data is found,
