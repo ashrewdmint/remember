@@ -59,8 +59,10 @@
       var saved_state = this.params_to_object(this.last(form));
       var changes = [];
       
-      $.each(new_state, function(name, value) {
-        if (saved_state[name] != value) {
+      fields = $.extend({}, new_state, saved_state);
+      
+      $.each(fields, function(name, value) {
+        if (saved_state[name] != new_state[name]) {
           changes.push({
             'name':    name,
             'value':   value,
