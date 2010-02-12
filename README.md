@@ -10,36 +10,71 @@ Where to find this plugin:
 ## Usage
 
 To use, select any elements containing form fields and call the `remember()` method.
+This method returns a jQuery object, so you can chain method calls.
 
     $('form, .field-container').remember();
     // Returns any elements selected, so you can call more methods afterwards on the same line.
 
 After changes are made to any fields in the selected elements, you can use `hasChanges`
-to check whether or not changes were made.
+to check whether or not changes were made. This method works on multiple elements.
 
     $('form, .field-container').remember('hasChanges');
     // Returns true or false
 
 Additionally, `changes` returns an array of changes. Each element in the array is an
-object, with `name`, `value`, and `element` properties.
+object, with `name`, `value`, and `element` properties. This method also works on multiple elements.
 
     $('form, .field-container').remember('changes');
     // Returns something like:
     // [{name: 'fieldname', value: 'fieldvalue', element: jquery_object}]
 
-Once changes have been made, you may want to use `reset` to reset the old data.
+Once changes have been made, you may want to use `save` to reset the old data.
+`save` works on multiple elements, too. This returns a jQuery object.
 
-    $('form, .field-container').remember('reset');
+    $('form, .field-container').remember('save');
     // Now the hasChanges method will return false
 
-If you are done with this functionality, use the `forget` method.
+You might want to restore the last saved state of the fields you are remembering. To do this,
+use the `restore` method. It works on multiple elements and returns a jQuery object.
+
+    $('form, .field-container').remember('restore);
+    // All remembered field elements have been reset to their last saved values
+
+Remember has its own serialize method which it uses in place of jQuery's built-in serialize method.
+This is because the jQuery method only works with forms. Remember exposes its serialize method so
+you can use it yourself. If no second argument is supplied, a param string is returned. If the
+second argument is `true`, an object is returned. You can use `$.param()` to turn this object into a
+param string.
+
+This method only works on the first element supplied.
+
+    $('.field-container').remember('serialize');
+
+If you want to see the last saved changes, use `last`. It only works on the first element supplied.
+If you pass it a second argument with a value of `true`, an object is returned. Otherwise, a param
+string is returned.
+
+    $('.field-container').remember('last');
+
+If you are done with this functionality, use the `forget` method. This returns a jQuery object.
 
     $('form, .field-container').remember('forget');
     // Data associated with this plugin has been forgotten.
 
+
+Additionally, there is a utility method called `objectFromParams` accessible through `$.remember.objectFromParams`.
+This method takes a param string (`"name=value&name2=value2"`) and turns it into an object (`{name: 'value', name2: 'value2}`).
+
 And that's all. Enjoy!
 
 ## Changelog
+
+### 1.1.0
+
+*  Renamed `reset` to `save`.
+*  Added `restore`, `serialize`, and `last` methods.
+*  Exposed `objectFromParams` utility method through `$.remember.objectFromParams`.
+*  More cowbell.
 
 ### 1.0.1
 

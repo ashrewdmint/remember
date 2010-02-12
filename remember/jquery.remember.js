@@ -5,7 +5,7 @@
  * Copyright (c) 2010 Andrew Smith
  * Examples and documentation at: http://github.com/ashrewdmint/classnotes
  * 
- * Version: 1.0.1 (02/05/2010)
+ * Version: 1.1.0 (02/11/2010)
  * Requires: jQuery v1.3+
  * 
  * Dual licensed under the MIT and GPL licenses:
