@@ -10,8 +10,8 @@
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #c9ff3d;
-		  font-family: "Helvetica,Arial,FreeSans"; 
+  		background-color: white;
+		  font-family: Helvetica, Arial, Sans-serif; 
   		color: #000000;
     }
     #container {
@@ -22,11 +22,10 @@
 		h1 .small { font-size: 0.4em; }
 		h1 a { text-decoration: none }
 		h2 { font-size: 1.5em; color: #3600c2; }
-    h3 { text-align: center; color: #3600c2; }
     a { color: #3600c2; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
+		pre { background: #000; color: #fff; padding: 15px; overflow: auto;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
 	</style>
@@ -52,20 +51,122 @@
       Keep track of changes made to a form (or any element containing fields) with jQuery.
     </div>
 
-    <p>Soon.</p><h2>Install</h2>
-<p>Link to the jquery.remember.js file in your HTML document, after you link to jQuery.</p>
-<h2>License</h2>
-<p>Copyright (c) 2010 Andrew Smith.
+		<p>Where to find this plugin:</p>
 
-Dual licensed under the MIT and GPL licenses:
+		<ul>
+		<li><a href="http://plugins.jquery.com/project/remember">jQuery Plugins</a></li>
+		<li><a href="http://github.com/ashrewdmint/remember">GitHub</a></li>
+		</ul>
 
-http://www.opensource.org/licenses/mit-license.php
-http://www.gnu.org/licenses/gpl.html</p>
-<h2>Authors</h2>
-<p>Andrew Smith (andrew.caleb.smith@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Andrew Smith (andrew.caleb.smith@gmail.com)<br/>      </p>
+		<h2 id="usage">Usage</h2>
 
+		<p>To use, select any elements containing form fields and call the <code>remember()</code> method.
+		This method returns a jQuery object, so you can chain method calls.</p>
+
+<pre><code>$('form, .field-container').remember();
+// Returns any elements selected, so you can call more methods afterwards on the same line.
+</code></pre>
+
+		<p>After changes are made to any fields in the selected elements, you can use <code>hasChanges</code>
+		to check whether or not changes were made. This method works on multiple elements.</p>
+
+<pre><code>$('form, .field-container').remember('hasChanges');
+// Returns true or false
+</code></pre>
+
+		<p>Additionally, <code>changes</code> returns an array of changes. Each element in the array is an
+		object, with <code>name</code>, <code>value</code>, and <code>element</code> properties. This method also works on multiple elements.</p>
+
+<pre><code>$('form, .field-container').remember('changes');
+// Returns something like:
+// [{name: 'fieldname', value: 'fieldvalue', element: jquery_object}]
+</code></pre>
+
+		<p>Once changes have been made, you may want to use <code>save</code> to reset the old data.
+		<code>save</code> works on multiple elements, too. This returns a jQuery object.</p>
+
+<pre><code>$('form, .field-container').remember('save');
+// Now the hasChanges method will return false
+</code></pre>
+
+		<p>You might want to restore the last saved state of the fields you are remembering. To do this,
+		use the <code>restore</code> method. It works on multiple elements and returns a jQuery object.</p>
+
+<pre><code>$('form, .field-container').remember('restore);
+// All remembered field elements have been reset to their last saved values
+</code></pre>
+
+		<p>Remember has its own serialize method which it uses in place of jQuery&#8217;s built-in serialize method.
+		This is because the jQuery method only works with forms. Remember exposes its serialize method so
+		you can use it yourself. If no second argument is supplied, a param string is returned. If the
+		second argument is <code>true</code>, an object is returned. You can use <code>$.param()</code> to turn this object into a
+		param string.</p>
+
+		<p>This method only works on the first element supplied.</p>
+
+<pre><code>$('.field-container').remember('serialize');
+</code></pre>
+
+		<p>If you want to see the last saved changes, use <code>last</code>. It only works on the first element supplied.
+		If you pass it a second argument with a value of <code>true</code>, an object is returned. Otherwise, a param
+		string is returned.</p>
+
+<pre><code>$('.field-container').remember('last');
+</code></pre>
+
+		<p>If you are done with this functionality, use the <code>forget</code> method. This returns a jQuery object.</p>
+
+<pre><code>$('form, .field-container').remember('forget');
+// Data associated with this plugin has been forgotten.
+</code></pre>
+
+		<p>Additionally, there is a utility method called <code>objectFromParams</code> accessible through <code>$.remember.objectFromParams</code>.
+		This method takes a param string (<code>"name=value&amp;name2=value2"</code>) and turns it into an object (<code>{name: 'value', name2: 'value2'}</code>).</p>
+
+		<p>And that&#8217;s all. Enjoy!</p>
+
+		<h2 id="changelog">Changelog</h2>
+
+		<h3 id="110">1.1.0</h3>
+
+		<ul>
+		<li>Renamed <code>reset</code> to <code>save</code>.</li>
+		<li>Added <code>restore</code>, <code>serialize</code>, and <code>last</code> methods.</li>
+		<li>Exposed <code>objectFromParams</code> utility method through <code>$.remember.objectFromParams</code>.</li>
+		<li>More cowbell.</li>
+		</ul>
+
+		<h3 id="101">1.0.1</h3>
+
+		<ul>
+		<li>Fixed a bug that prevented changes from being remembered on some
+		field types (like textareas or select menus).</li>
+		<li>Fixed a bug that kept the &#8220;changes&#8221; method from returning fields
+		when fields were removed (or modified in such a way so that they
+		disappeared from the string generated during serialization).</li>
+		</ul>
+
+		<h3 id="100">1.0.0</h3>
+
+		<ul>
+		<li>Initial release</li>
+		</ul>
+		
+		<h2>Install</h2>
+		
+		<p>Link to the jquery.remember.js file in your HTML document, after you link to jQuery.</p>
+
+		<h2>License</h2>
+		
+		<p>Copyright (c) 2010 Andrew Smith.</p>
+		<p>Dual licensed under the MIT and GPL licenses:</p>
+		<ul>
+			<li>http://www.opensource.org/licenses/mit-license.php</li>
+			<li>http://www.gnu.org/licenses/gpl.html</li>
+		</ul>
+
+		<h2>Author</h2>
+		<p>Andrew Smith (andrew.caleb.smith@gmail.com)</p>
 
     <h2>Download</h2>
     <p>
