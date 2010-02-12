@@ -36,7 +36,7 @@
       params = params.join('&');;
       
       if (return_object) {
-        params = this.params_to_object(params);
+        params = this.objectFromParams(params);
       }
       
       return params;
@@ -45,7 +45,7 @@
     // Restores the fields to their last saved values
     restore: function(el) {
       el = $(el);
-      var saved_state = this.params_to_object(this.last(el));
+      var saved_state = this.objectFromParams(this.last(el));
       
       // Uncheck fields that aren't found
       el.find('[name]').each(function(){
@@ -86,7 +86,7 @@
       form.data(this.key_name, data);
       
       if (return_object) {
-        data = this.params_to_object(data);
+        data = this.objectFromParams(data);
       }
       
       return data;
@@ -101,8 +101,8 @@
     // Example result:
     //   [{name: 'fieldname', value: 'fieldvalue', element: jquery_object}]
     changes: function(form) {
-      var new_state   = this.params_to_object(this.serialize(form));
-      var saved_state = this.params_to_object(this.last(form));
+      var new_state   = this.objectFromParams(this.serialize(form));
+      var saved_state = this.objectFromParams(this.last(form));
       var changes = [];
       
       fields = $.extend({}, new_state, saved_state);
@@ -122,7 +122,7 @@
     
     // Takes strings returned by form.serialize() and turns them into
     // objects with keys and values that match the string's keys and values.
-    params_to_object: function(string) {
+    objectFromParams: function(string) {
       var object = {};
       var array = string.split('&');
 
