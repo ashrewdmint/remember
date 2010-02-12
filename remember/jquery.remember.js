@@ -17,6 +17,9 @@
   $.remember = {
     // Key used to set and retrieve data on forms
     key_name: 'jquery.remember',
+    return_methods:     ['hasChanges', 'changes', 'last', 'serialize'],
+    silent_methods:     ['save', 'restore', 'forget'],
+    first_only_methods: ['last', 'serialize'],
     
     // Serializes form elements and non-form elements.
     // Only fields with names will be serialized.
@@ -76,6 +79,12 @@
           }
         }
       });
+    },
+    
+    // Forgets all data, then calls last to set new data
+    save: function(form) {
+      this.forget(form);
+      this.last(form);
     },
     
     // Finds the last serialization stored in the form. If no data is found,
@@ -144,84 +153,61 @@
   };
   
   $.fn.remember = function(method, second) {
-    var forms, results, result;
-    results = [];
-    
     if (typeof(method) == 'undefined') {
       method = 'save';
     }
     
-    this.each(function(index, form) {
-      form = $(form);
-      switch (method) {
-        case 'save':
-          $.remember.forget(form);
-          $.remember.last(form);
-        break;
-        case 'restore':
-          $.remember.restore(form);
-        break;
-        case 'serialize':
-          results.push($.remember.serialize(form, second));
-          return;
-        break;
-        case 'last':
-          results.push($.remember.last(form, second));
-          return;
-        break;
-        case 'changes':
-          results.push($.remember.changes(form));
-        break;
-        case 'hasChanges':
-          results.push($.remember.hasChanges(form));
-        break;
-        case 'forget':
-          results.push($.remember.forget(form));
-        break;
-      }
-    });
+    var items  = this;
+    var values = [];
+    var result = null;
     
-    $.each(results, function(index, value) {
-      switch (method) {
-        // Returns array of all changes in all forms
-        case 'changes':
-          if (! result || typeof(result.length) == 'undefined') {
-            result = [];
-          }
-          $.each(value, function(i, change){
-            result.push(change);
-          });
-        break;
-        
-        // Returns true or false depending on whether or not any
-        // changes were made in any of the forms.
-        case 'hasChanges':
-          if (typeof(result) != 'boolean') {
-            result = false;
-          }
-          if (value) {
-            result = true;
-          }
-        break;
-        
-        // Returns params
-        case 'serialize':
-          result = value;
-        break;
-        case 'last':
-          result = value;
-        break;
-      }
-    });
-    
-    if ($.inArray(method, ['save', 'forget', 'restore']) >= 0) {
-      return this;
-    }
-
-    if (typeof(result) == 'undefined') {
-      throw 'Undefined method "' + method + '" for jquery plugin remember';
+    // Ignore multiple items if this method only deals with the first item
+    if ($.inArray(method, $.remember.first_only_methods) >= 0) {
+      items = items.eq(0);
     }
     
-    return result;
+    // If this method should return something
+    if ($.inArray(method, $.remember.return_methods) >= 0) {
+      items.each(function(){
+        // Call method
+        var value = $.remember[method]($(this), second);
+        
+        switch (method) {
+          case 'hasChanges':
+            // If there are no changes so far, set the result to the method response
+            // If the result gets set to true, it won't be changed anymore
+            if (! result) {
+              result = value;
+            }
+          break;
+          case 'changes':
+            if (! $.isArray(result)) {
+              result = [];
+            }
+            // Loop through each changed item and add it to the result array
+            $.each(value, function(){
+              result.push(this);
+            });
+          break;
+          default:
+            result = value;
+          break;
+        }
+      });  
+        
+      return result;
+    }
+    // If this is a silent method
+    else if ($.inArray(method, $.remember.silent_methods) >= 0) {
+      items.each(function(){
+        $.remember[method]($(this));
+      });
+    }
+    // Error!
+    else {
+      throw 'Undefined method "' + method + '" for jQuery plugin remember';
+    }
+    // Return jQuery object by default
+    return this;
   };
 })(jQuery);
