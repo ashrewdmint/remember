@@ -63,7 +63,7 @@ If you are done with this functionality, use the `forget` method. This returns a
 
 
 Additionally, there is a utility method called `objectFromParams` accessible through `$.remember.objectFromParams`.
-This method takes a param string (`"name=value&name2=value2"`) and turns it into an object (`{name: 'value', name2: 'value2}`).
+This method takes a param string (`"name=value&name2=value2"`) and turns it into an object (`{name: 'value', name2: 'value2'}`).
 
 And that's all. Enjoy!
 
@@ -80,7 +80,6 @@ And that's all. Enjoy!
 
 *  Fixed a bug that prevented changes from being remembered on some
    field types (like textareas or select menus).
-
 *  Fixed a bug that kept the "changes" method from returning fields
    when fields were removed (or modified in such a way so that they
    disappeared from the string generated during serialization).
