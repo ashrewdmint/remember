@@ -214,7 +214,7 @@
       }
     });
     
-    if ($.inArray(method, ['save', 'forget', 'reset']) >= 0) {
+    if ($.inArray(method, ['save', 'forget', 'restore']) >= 0) {
       return this;
     }
 
