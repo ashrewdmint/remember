@@ -25,20 +25,32 @@ $(document).ready(function(){
 		alert(changes);
 	});
 	
-	$('a:contains(Reset)').click(function(e){
+	$('a:contains(Save all)').click(function(e){
 		e.preventDefault();
-		all_forms.remember('reset');
+		all_forms.remember('save');
 	});
 	
 	$('a:contains(Save changes)').click(function(e){
 		e.preventDefault();
-		$(this).parents('form').remember('reset');
+		$(this).parents('form, .fake-form').remember('save');
 	});
 	
 	$('a:contains(Deselect)').click(function(e){
 		e.preventDefault();
 		
 		$('[type=radio]').attr('checked', false);
+	});
+	
+	$('a:contains(Restore)').click(function(e){
+		e.preventDefault();
+		
+		all_forms.remember('restore');
+	});
+
+	$('a:contains(Serialize)').click(function(e){
+		e.preventDefault();
+
+		alert($(this).parents('form, .fake-form').remember('serialize'));
 	});
 	
 });
@@ -49,7 +61,10 @@ $(document).ready(function(){
 <div>
 	<h3>Form</h3>
 	<form action="#">
-		<p><a href="#">Save changes</a></p>
+		<ul>
+			<li><a href="#">Save changes</a></li>
+			<li><a href="#">Serialize</a></li>
+		</ul>
 		
 		<p>
 			<input type="text" name="input1" value="Input 1" />
@@ -84,7 +99,10 @@ $(document).ready(function(){
 
 	<h3>Div</h3>
 	<div class="fake-form">
-		<p><a href="#">Save changes</a></p>
+		<ul>
+			<li><a href="#">Save changes</a></li>
+			<li><a href="#">Serialize</a></li>
+		</ul>
 		
 		<p>
 			<input type="text" name="input3" value="Input 3" />
@@ -96,7 +114,9 @@ $(document).ready(function(){
 	<ul>
 		<li><a href="#">Changes made?</a></li>
 		<li><a href="#">List changes</a></li>
-		<li><a href="#">Reset</a></li>
+		<li><a href="#">Save all</a></li>
+		<li><a href="#">Restore</a></li>
+		<li><a href="#">Serialize</a></li>
 	</ul>
 </div>
 

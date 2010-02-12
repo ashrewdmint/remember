@@ -24,17 +24,52 @@
       var field, tag, value, params = [];
       el.find('[name]:input').each(function(){
         field = $(this);
-        tag   = field.get(0).nodeName.toLowerCase();
-        value = field.val() ? field.val() : field.text();
         
-        if (field.attr('type') == 'radio' && ! field.is(':checked')) {
+        // Unchecked radio buttons should not be serialized
+        if (field.attr('type') == 'radio' && ! field.attr('checked')) {
           return;
         }
         
-        params.push(escape(field.attr('name')) + '=' + escape(value));
+        params.push(escape(field.attr('name')) + '=' + escape(field.val()));
       });
       
       return params.join('&');
+    },
+    
+    // Restores the fields to their last saved values
+    restore: function(el) {
+      el = $(el);
+      var saved_state = this.params_to_object(this.last(el));
+      
+      // Uncheck fields that aren't found
+      el.find('[name]').each(function(){
+        var field = $(this);
+        var name = field.attr('name');
+        
+        if (! saved_state[name]) {
+          field.attr('checked', false);
+        }
+      });
+      
+      // Reset value
+      $.each(saved_state, function(name, value){
+        var field = el.find('[name=' + name + ']');
+        var type  = field.attr('type');
+        var tag   = field.get(0).nodeName.toLowerCase();
+        
+        if (tag == 'textarea') {
+          field.text(value);
+        } else {
+          // Check radio buttons
+          if (type == 'radio') {
+            field.attr('checked', true);
+          }
+          // Set value for other things
+          else {
+            field.val(value);
+          }
+        }
+      });
     },
     
     // Finds the last serialization stored in the form. If no data is found,
@@ -99,15 +134,22 @@
     results = [];
     
     if (typeof(method) == 'undefined') {
-      method = 'reset';
+      method = 'save';
     }
     
     this.each(function(index, form) {
       form = $(form);
       switch (method) {
-        case 'reset':
+        case 'save':
           remember.forget(form);
-          results.push(remember.last(form));
+          remember.last(form);
+        break;
+        case 'restore':
+          remember.restore(form);
+        break;
+        case 'serialize':
+          results.push(remember.serialize(form));
+          return;
         break;
         case 'changes':
           results.push(remember.changes(form));
@@ -143,10 +185,15 @@
             result = true;
           }
         break;
+        
+        // Returns param string
+        case 'serialize':
+          result = value;
+        break;
       }
     });
     
-    if (method == 'reset' || method == 'forget') {
+    if ($.inArray(method, ['save', 'forget', 'reset']) >= 0) {
       return this;
     }
 
