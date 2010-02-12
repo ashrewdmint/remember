@@ -56,6 +56,16 @@ $(document).ready(function(){
 		}
 		alert(el.remember('serialize'));
 	});
+
+	$('a:contains(Last)').click(function(e){
+		e.preventDefault();
+		var el = $(this).parents('form, .fake-form');
+
+		if (console) {
+			console.log(el.remember('last', true));
+		}
+		alert(el.remember('last'));
+	});
 	
 });
 	</script>
@@ -68,6 +78,7 @@ $(document).ready(function(){
 		<ul>
 			<li><a href="#">Save changes</a></li>
 			<li><a href="#">Serialize</a></li>
+			<li><a href="#">Last</a></li>
 		</ul>
 		
 		<p>
@@ -106,6 +117,7 @@ $(document).ready(function(){
 		<ul>
 			<li><a href="#">Save changes</a></li>
 			<li><a href="#">Serialize</a></li>
+			<li><a href="#">Last</a></li>
 		</ul>
 		
 		<p>

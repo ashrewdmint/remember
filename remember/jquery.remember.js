@@ -39,7 +39,7 @@
         params = this.params_to_object(params);
       }
       
-      return params
+      return params;
     },
     
     // Restores the fields to their last saved values
@@ -80,10 +80,15 @@
     
     // Finds the last serialization stored in the form. If no data is found,
     // the form will be serialized and the result stored.
-    last: function(form) {
+    last: function(form, return_object) {
       var data = form.data(this.key_name);
       data = data ? data : this.serialize(form);
       form.data(this.key_name, data);
+      
+      if (return_object) {
+        data = this.params_to_object(data);
+      }
+      
       return data;
     },
     
@@ -157,6 +162,10 @@
           results.push(remember.serialize(form, second));
           return;
         break;
+        case 'last':
+          results.push(remember.last(form, second));
+          return;
+        break;
         case 'changes':
           results.push(remember.changes(form));
         break;
@@ -192,8 +201,11 @@
           }
         break;
         
-        // Returns param string
+        // Returns params
         case 'serialize':
+          result = value;
+        break;
+        case 'last':
           result = value;
         break;
       }
