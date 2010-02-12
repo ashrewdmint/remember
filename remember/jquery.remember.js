@@ -14,7 +14,7 @@
  */
 
 (function($){
-  var remember = {
+  $.remember = {
     // Key used to set and retrieve data on forms
     key_name: 'jquery.remember',
     
@@ -155,28 +155,28 @@
       form = $(form);
       switch (method) {
         case 'save':
-          remember.forget(form);
-          remember.last(form);
+          $.remember.forget(form);
+          $.remember.last(form);
         break;
         case 'restore':
-          remember.restore(form);
+          $.remember.restore(form);
         break;
         case 'serialize':
-          results.push(remember.serialize(form, second));
+          results.push($.remember.serialize(form, second));
           return;
         break;
         case 'last':
-          results.push(remember.last(form, second));
+          results.push($.remember.last(form, second));
           return;
         break;
         case 'changes':
-          results.push(remember.changes(form));
+          results.push($.remember.changes(form));
         break;
         case 'hasChanges':
-          results.push(remember.hasChanges(form));
+          results.push($.remember.hasChanges(form));
         break;
         case 'forget':
-          results.push(remember.forget(form));
+          results.push($.remember.forget(form));
         break;
       }
     });
