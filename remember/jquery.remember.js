@@ -20,7 +20,7 @@
     
     // Serializes form elements and non-form elements.
     // Only fields with names will be serialized.
-    serialize: function(el) {
+    serialize: function(el, return_object) {
       var field, tag, value, params = [];
       el.find('[name]:input').each(function(){
         field = $(this);
@@ -33,7 +33,13 @@
         params.push(escape(field.attr('name')) + '=' + escape(field.val()));
       });
       
-      return params.join('&');
+      params = params.join('&');;
+      
+      if (return_object) {
+        params = this.params_to_object(params);
+      }
+      
+      return params
     },
     
     // Restores the fields to their last saved values
@@ -129,7 +135,7 @@
     }
   };
   
-  $.fn.remember = function(method) {
+  $.fn.remember = function(method, second) {
     var forms, results, result;
     results = [];
     
@@ -148,7 +154,7 @@
           remember.restore(form);
         break;
         case 'serialize':
-          results.push(remember.serialize(form));
+          results.push(remember.serialize(form, second));
           return;
         break;
         case 'changes':

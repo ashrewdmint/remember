@@ -49,8 +49,12 @@ $(document).ready(function(){
 
 	$('a:contains(Serialize)').click(function(e){
 		e.preventDefault();
-
-		alert($(this).parents('form, .fake-form').remember('serialize'));
+		var el = $(this).parents('form, .fake-form');
+		
+		if (console) {
+			console.log(el.remember('serialize', true));
+		}
+		alert(el.remember('serialize'));
 	});
 	
 });
