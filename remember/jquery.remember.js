@@ -128,7 +128,10 @@
 
       $.each(array, function(name, value) {
         value = unescape(value).split('=');
-        object[value[0]] = value[1];
+        
+        if (value.length > 0) {
+          object[value[0]] = value[1];
+        }
       });
 
       return object;
