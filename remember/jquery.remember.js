@@ -63,18 +63,31 @@
       $.each(saved_state, function(name, value){
         var field = el.find('[name=' + name + ']');
         var type  = field.attr('type');
-        var tag   = field.get(0).nodeName.toLowerCase();
         
+        // Skip if field is not found
+        if (! field.length)
+          return;
+        
+        var tag   = field.get(0).nodeName.toLowerCase();
         if (tag == 'textarea') {
           field.text(value);
         } else {
-          // Check radio buttons
-          if (type == 'radio') {
-            field.attr('checked', true);
-          }
-          // Set value for other things
-          else {
-            field.val(value);
+          switch (type) {
+            case 'radio':
+              field.each(function(){
+                if ($(this).val() == value) {
+                  $(this).attr('checked', true);
+                }else{
+                  $(this).attr('checked', false);
+                }
+              });
+            break;
+            case 'checkbox':
+              field.attr('checked', true);
+            break;
+            default:
+              field.val(value);
+            break;
           }
         }
       });
