@@ -69,6 +69,12 @@ And that's all. Enjoy!
 
 ## Changelog
 
+### 1.1.1
+
+* Fixed bugs which prevented checkboxes and radio buttons from being
+  correctly serialized and restored
+* The `restore` function no longer breaks on missing input fields
+
 ### 1.1.0
 
 *  Renamed `reset` to `save`.
