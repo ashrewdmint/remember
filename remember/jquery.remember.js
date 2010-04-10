@@ -28,11 +28,10 @@
       el.find('[name]:input').each(function(){
         field = $(this);
         
-        // Unchecked radio buttons should not be serialized
-        if (field.attr('type') == 'radio' && ! field.attr('checked')) {
+        // Unchecked radio buttons or checkboxes should not be serialized
+        if (field.attr('type').match(/radio|checkbox/) && ! field.attr('checked')) {
           return;
         }
-        
         params.push(escape(field.attr('name')) + '=' + escape(field.val()));
       });
       
