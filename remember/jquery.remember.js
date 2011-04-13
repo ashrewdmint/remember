@@ -22,17 +22,17 @@
     first_only_methods: ['last', 'serialize'],
     
     // Serializes form elements and non-form elements.
-    // Only fields with names will be serialized.
+    // Only fields with ID will be serialized.
     serialize: function(el, return_object) {
       var field, tag, value, params = [];
-      el.find('[name]:input').each(function(){
+      el.find('[id]:input').each(function(){
         field = $(this);
         
         // Unchecked radio buttons or checkboxes should not be serialized
         if (field.attr('type').match(/radio|checkbox/) && ! field.attr('checked')) {
           return;
         }
-        params.push(escape(field.attr('name')) + '=' + escape(field.val()));
+        params.push(escape(field.attr('id')) + '=' + escape(field.val()));
       });
       
       params = params.join('&');;
@@ -50,18 +50,18 @@
       var saved_state = this.objectFromParams(this.last(el));
       
       // Uncheck fields that aren't found
-      el.find('[name]').each(function(){
+      el.find('[id]').each(function(){
         var field = $(this);
-        var name = field.attr('name');
+        var id = field.attr('id');
         
-        if (! saved_state[name]) {
+        if (! saved_state[id]) {
           field.attr('checked', false);
         }
       });
       
       // Reset value
-      $.each(saved_state, function(name, value){
-        var field = el.find('[name="' + name + '"]');
+      $.each(saved_state, function(id, value){
+        var field = el.find('[id="' + id + '"]');
         var type  = field.attr('type');
         
         // Skip if field is not found
@@ -120,7 +120,7 @@
     
     // Returns an array of changes. Each item in the array is an object.
     // Example result:
-    //   [{name: 'fieldname', value: 'fieldvalue', element: jquery_object}]
+    //   [{id: 'fieldid', value: 'fieldvalue', element: jquery_object}]
     changes: function(form) {
       var new_state   = this.objectFromParams(this.serialize(form));
       var saved_state = this.objectFromParams(this.last(form));
@@ -128,12 +128,12 @@
       
       fields = $.extend({}, new_state, saved_state);
       
-      $.each(fields, function(name, value) {
-        if (saved_state[name] != new_state[name]) {
+      $.each(fields, function(id, value) {
+        if (saved_state[id] != new_state[id]) {
           changes.push({
-            'name':    name,
+            'id':    id,
             'value':   value,
-            'element': $('[name="' + name + '"]')
+            'element': $('[id="' + id + '"]')
           });
         }
       });
