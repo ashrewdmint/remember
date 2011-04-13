@@ -61,7 +61,7 @@
       
       // Reset value
       $.each(saved_state, function(name, value){
-        var field = el.find('[name=' + name + ']');
+        var field = el.find('[name="' + name + '"]');
         var type  = field.attr('type');
         
         // Skip if field is not found
@@ -133,7 +133,7 @@
           changes.push({
             'name':    name,
             'value':   value,
-            'element': $('[name=' + name + ']')
+            'element': $('[name="' + name + '"]')
           });
         }
       });
@@ -223,3 +223,4 @@
     return this;
   };
 })(jQuery);
+
